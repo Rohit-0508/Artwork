@@ -56,9 +56,10 @@ const App: React.FC = () => {
   }, [page]);
 
   // Function to handle page change
-  const onPageChange = (event: { first: number; rows: number; page: number }) => {
-    setPage(event.page + 1);
+  const onPageChange = (event: { first: number; rows: number; page?: number }) => {
+    setPage((event.page || 0) + 1);
   };
+  
 
   // Fetch artworks from a specific page (used when fetching multiple pages)
   const fetchArtworksForSelection = async (pageNumber: number) => {
