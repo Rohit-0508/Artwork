@@ -6,10 +6,9 @@ import { InputText } from 'primereact/inputtext';
 import { Paginator } from 'primereact/paginator';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { Button } from 'primereact/button';
-import { ProgressSpinner } from 'primereact/progressspinner';
 import drop from './assets/down-arrow (1).png'
 import "primereact/resources/themes/md-light-deeppurple/theme.css";
-
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface Artwork {
   id: number;
@@ -43,6 +42,7 @@ const App: React.FC = () => {
   const overlayPanelRef = useRef<OverlayPanel>(null); // Reference for the overlay panel
 
   const fetchArtworks = async (pageNumber: number) => {
+    setLoading(true);
     try {
       const response = await axios.get<ApiResponse>(`https://api.artic.edu/api/v1/artworks?page=${pageNumber}`);
       const data = response.data;
@@ -51,6 +51,7 @@ const App: React.FC = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -173,7 +174,8 @@ const App: React.FC = () => {
             <Column field="date_end" header="Date End" sortable></Column>
           </DataTable>
         )}
-        < Paginator
+
+        <Paginator
           first={(page - 1) * rowsPerPage}
           rows={rowsPerPage}
           totalRecords={totalRecords}
